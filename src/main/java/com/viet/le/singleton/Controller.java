@@ -8,14 +8,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
     @PostMapping("/setData")
-    public String setData(@RequestBody String body) {
-        Singleton singleton = Singleton.getInstance();
-        singleton.setString(body);
+    public String setData(@RequestBody String text) {
+        setDataOnSingleton(text);
         return "body set";
     }
 
     @GetMapping("/getData")
     public String getData() {
+        return getDataOnSingleton();
+    }
+
+    synchronized
+    private void setDataOnSingleton(String text) {
+        Singleton singleton = Singleton.getInstance();
+        singleton.setString(text);
+    }
+
+    synchronized
+    private String getDataOnSingleton() {
         Singleton singleton = Singleton.getInstance();
         return singleton.getString();
     }
